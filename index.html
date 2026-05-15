@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miguel Guevara — AI Automation Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #7c6af7;
+    --accent2: #38d9a9;
+    --accent3: #f7c948;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --tag-bg: #1e1e2e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
+  .noise { position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
+  .glow { position: fixed; width: 600px; height: 600px; background: radial-gradient(circle, rgba(124,106,247,0.08) 0%, transparent 70%); top: -200px; right: -200px; pointer-events: none; z-index: 0; }
+  .container { max-width: 860px; margin: 0 auto; padding: 48px 24px; position: relative; z-index: 1; }
+  .header { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: start; margin-bottom: 48px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(124,106,247,0.12); border: 1px solid rgba(124,106,247,0.3); color: var(--accent); padding: 4px 12px; border-radius: 100px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; margin-bottom: 16px; }
+  .badge::before { content: ''; width: 6px; height: 6px; background: var(--accent2); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+  .name { font-family: 'DM Serif Display', serif; font-size: 52px; line-height: 1.05; letter-spacing: -0.02em; color: var(--text); margin-bottom: 8px; }
+  .name span { color: var(--accent); }
+  .title { font-size: 15px; color: var(--muted); font-weight: 300; margin-bottom: 20px; line-height: 1.6; }
+  .contact-row { display: flex; flex-wrap: wrap; gap: 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+  .contact-row a { color: var(--accent2); text-decoration: none; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; min-width: 200px; }
+  .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--accent); display: block; }
+  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; }
+  .about { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin-bottom: 32px; position: relative; overflow: hidden; }
+  .about::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--accent), var(--accent2)); border-radius: 3px 0 0 3px; }
+  .about p { color: #c8c8e0; font-size: 15px; line-height: 1.8; }
+  .about p strong { color: var(--text); font-weight: 600; }
+  .section { margin-bottom: 40px; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; white-space: nowrap; }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .skill-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; transition: border-color 0.2s, transform 0.2s; }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .skill-icon { font-size: 20px; margin-bottom: 8px; display: block; }
+  .skill-name { font-weight: 600; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .skill-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .tools-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .tool-pill { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 6px 14px; font-size: 12px; color: var(--text); font-family: 'DM Mono', monospace; transition: border-color 0.2s; }
+  .tool-pill.purple { border-color: rgba(124,106,247,0.4); color: #a89af9; }
+  .tool-pill.green { border-color: rgba(56,217,169,0.4); color: #38d9a9; }
+  .tool-pill.yellow { border-color: rgba(247,201,72,0.4); color: #f7c948; }
+  .exp-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; margin-bottom: 16px; }
+  .exp-card.current { border-color: rgba(124,106,247,0.3); }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; flex-wrap: wrap; gap: 8px; }
+  .exp-role { font-weight: 700; font-size: 16px; color: var(--text); }
+  .exp-period { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); background: var(--surface2); padding: 4px 10px; border-radius: 100px; border: 1px solid var(--border); }
+  .exp-company { font-size: 13px; color: var(--accent2); margin-bottom: 14px; font-weight: 500; }
+  .exp-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .exp-list li { font-size: 13.5px; color: #b0b0cc; padding-left: 16px; position: relative; line-height: 1.6; }
+  .exp-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 11px; top: 2px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 10px; padding: 4px 10px; border-radius: 100px; border: 1px solid var(--border); color: var(--muted); background: var(--tag-bg); letter-spacing: 0.04em; }
+  .tag.purple { border-color: rgba(124,106,247,0.4); color: #a89af9; }
+  .tag.green { border-color: rgba(56,217,169,0.4); color: #38d9a9; }
+  .tag.yellow { border-color: rgba(247,201,72,0.4); color: #f7c948; }
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .edu-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
+  .edu-degree { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+  .edu-school { font-size: 12px; color: var(--accent2); margin-bottom: 4px; }
+  .edu-year { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; transition: border-color 0.2s, transform 0.2s; }
+  .project-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .project-name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 8px; }
+  .project-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+  .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+  .course-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; }
+  .course-topic { font-weight: 600; font-size: 12px; color: var(--text); margin-bottom: 2px; }
+  .course-src { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
+  .footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .footer-note { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+  .footer-loc { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent2); }
+  @media (max-width: 640px) { .header { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(4, 1fr); } .edu-grid, .projects-grid { grid-template-columns: 1fr; } .name { font-size: 36px; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="glow"></div>
+<div class="container">
+
+  <div class="header">
+    <div>
+      <div class="badge">Disponible para oportunidades remotas</div>
+      <h1 class="name">Miguel <span>Guevara</span></h1>
+      <p class="title">AI Automation Engineer · Python · n8n · GPT-4o · Oracle · AWS · Multi-Agent Systems</p>
+      <div class="contact-row">
+        <span>📍 Monterrey, NL · México</span>
+        <span>✉️ joseguevara018499@gmail.com</span>
+        <span>📱 811 378 9703</span>
+        <a href="https://github.com/MG-777" target="_blank">⚡ github.com/MG-777</a>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box"><span class="stat-num">4+</span><span class="stat-label">Años en datos</span></div>
+      <div class="stat-box"><span class="stat-num">10+</span><span class="stat-label">Flujos IA activos</span></div>
+      <div class="stat-box"><span class="stat-num">5</span><span class="stat-label">Países operando</span></div>
+      <div class="stat-box"><span class="stat-num">GPT-4o</span><span class="stat-label">En producción</span></div>
+    </div>
+  </div>
+
+  <div class="about">
+    <p>Ingeniero de Automatización Inteligente con experiencia construyendo sistemas de IA y pipelines de datos en producción para operaciones multinacionales. En Packsys México diseño, implemento y mantengo <strong>flujos automatizados con n8n, Python, Oracle Analytics Cloud y GPT-4o</strong> que impactan directamente en ventas, calidad y atracción de talento en 5 países. Trabajo con <strong>arquitecturas multi-agente</strong>, integraciones vía API, automatización en AWS y herramientas de desarrollo con IA como <strong>Claude Code y Gemini CLI</strong>. Actualmente cursando <strong>Maestría en Inteligencia Artificial</strong>.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-label">Stack técnico</span><div class="section-line"></div></div>
+    <div class="skills-grid">
+      <div class="skill-card"><span class="skill-icon">🤖</span><div class="skill-name">LLMs & Prompt Engineering</div><div class="skill-desc">GPT-4o, GPT-4.1-mini, Claude API · Agentes evaluadores · Prompts estructurados con rubric scoring · Sistemas multi-agente coordinados</div></div>
+      <div class="skill-card"><span class="skill-icon">⚙️</span><div class="skill-name">n8n Workflow Automation</div><div class="skill-desc">n8n Cloud v2.13 · Flujos multi-agente · Integraciones API · Reportes HTML automáticos · Webhooks · n8n-mcp</div></div>
+      <div class="skill-card"><span class="skill-icon">🐍</span><div class="skill-name">Python</div><div class="skill-desc">Scripts de automatización · ETL pipelines · pandas · oracledb · Selenium · Web scraping · AWS EC2 · cron jobs</div></div>
+      <div class="skill-card"><span class="skill-icon">🗄️</span><div class="skill-name">SQL & Oracle</div><div class="skill-desc">Oracle SQL Developer · Oracle Autonomous Database · MySQL · Administración de BDD · Consultas para pipelines OAC</div></div>
+      <div class="skill-card"><span class="skill-icon">☁️</span><div class="skill-name">Cloud & DevOps</div><div class="skill-desc">AWS EC2 · GitHub + organizaciones · Oracle Cloud · Google Cloud APIs · Wallet / TLS · Scripts en producción</div></div>
+      <div class="skill-card"><span class="skill-icon">🔗</span><div class="skill-name">Integraciones & APIs</div><div class="skill-desc">SuiteCRM · Google Sheets API · Genesys · REST APIs · Oracle Analytics Cloud · Webhooks</div></div>
+      <div class="skill-card"><span class="skill-icon">🧠</span><div class="skill-name">AI Dev Tools</div><div class="skill-desc">Claude Code (Anthropic) · Gemini CLI · Google Antigravity IDE · Diseño de arquitecturas multi-agente</div></div>
+      <div class="skill-card"><span class="skill-icon">🌐</span><div class="skill-name">Web Automation</div><div class="skill-desc">Selenium WebDriver · Web scraping · Automatización de formularios CPQ · Extracción estructurada de datos</div></div>
+    </div>
+    <div class="tools-row">
+      <span class="tool-pill purple">GPT-4o</span>
+      <span class="tool-pill purple">Claude API</span>
+      <span class="tool-pill purple">n8n Cloud</span>
+      <span class="tool-pill purple">Claude Code</span>
+      <span class="tool-pill purple">Multi-agente</span>
+      <span class="tool-pill green">Python</span>
+      <span class="tool-pill green">AWS EC2</span>
+      <span class="tool-pill green">GitHub</span>
+      <span class="tool-pill green">Google Cloud</span>
+      <span class="tool-pill green">Selenium</span>
+      <span class="tool-pill yellow">Oracle DB</span>
+      <span class="tool-pill yellow">SQL Developer</span>
+      <span class="tool-pill yellow">OAC</span>
+      <span class="tool-pill yellow">SuiteCRM</span>
+      <span class="tool-pill">Gemini CLI</span>
+      <span class="tool-pill">MySQL</span>
+      <span class="tool-pill">Genesys</span>
+      <span class="tool-pill">REST APIs</span>
+      <span class="tool-pill">Web Scraping</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-label">Experiencia</span><div class="section-line"></div></div>
+
+    <div class="exp-card current">
+      <div class="exp-header">
+        <div class="exp-role">Analista de Datos · Automatización e Inteligencia Artificial</div>
+        <div class="exp-period">2022 — Actual</div>
+      </div>
+      <div class="exp-company">Packsys México · Monterrey, NL (operaciones en MX, CR, GT, PA, CO)</div>
+      <ul class="exp-list">
+        <li>Diseñé y mantuve pipelines de datos en <strong>Oracle Analytics Cloud</strong> para reportes de ventas, precios y KPIs operativos en 5 países.</li>
+        <li>Construí un sistema de auditoría de llamadas con <strong>GPT-4o en n8n</strong> que evalúa automáticamente criterios de calidad en transcripciones de Genesys, generando alertas y reportes por correo en tiempo real.</li>
+        <li>Automaticé scripts <strong>Python en AWS EC2</strong> con cron jobs para carga de precios conectados a Oracle Autonomous Database con Wallet.</li>
+        <li>Desarrollé <strong>arquitecturas multi-agente</strong> con LLMs coordinados para análisis, generación de reportes y evaluación de calidad.</li>
+        <li>Integré <strong>SuiteCRM</strong> con flujos n8n para contactación automatizada y secuencias de seguimiento de ventas.</li>
+        <li>Implementé agentes con <strong>GPT-4.1-mini</strong> para generación automática de reportes HTML de ventas distribuidos por correo.</li>
+        <li>Migré infraestructura Oracle On-Premise a <strong>Oracle Autonomous Database</strong>, actualizando scripts de producción en EC2.</li>
+        <li>Automatización de procesos CPQ con <strong>Selenium</strong> en AWS para múltiples entidades del grupo en Latinoamérica.</li>
+        <li>Uso diario de <strong>Claude Code y Gemini CLI</strong> como herramientas de desarrollo para acelerar implementaciones y reducir tiempo de debugging.</li>
+      </ul>
+      <div class="tags">
+        <span class="tag purple">n8n</span>
+        <span class="tag purple">GPT-4o</span>
+        <span class="tag purple">Multi-agente</span>
+        <span class="tag purple">Claude Code</span>
+        <span class="tag green">Python</span>
+        <span class="tag green">AWS EC2</span>
+        <span class="tag green">GitHub</span>
+        <span class="tag green">Selenium</span>
+        <span class="tag yellow">Oracle DB</span>
+        <span class="tag yellow">OAC</span>
+        <span class="tag yellow">SuiteCRM</span>
+        <span class="tag yellow">Genesys</span>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-role">Ingeniero de Manufactura</div>
+        <div class="exp-period">Mar 2023 — 2022</div>
+      </div>
+      <div class="exp-company">Tecnotroqueles · Monterrey, NL</div>
+      <ul class="exp-list">
+        <li>Recopilación y preprocesamiento de datos desde ERP, hojas de cálculo y bases de datos.</li>
+        <li>Creación de dashboards y visualizaciones gráficas para toma de decisiones operativas.</li>
+        <li>Gestión de proyectos de fabricación y seguimiento de KPIs de producción.</li>
+      </ul>
+      <div class="tags"><span class="tag">Excel</span><span class="tag">Dashboards</span><span class="tag">ERP</span><span class="tag">KPIs</span></div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-role">Ingeniero de Procesos</div>
+        <div class="exp-period">Jun 2021 — Feb 2022</div>
+      </div>
+      <div class="exp-company">Grupo ABX · Apodaca, NL</div>
+      <ul class="exp-list">
+        <li>Reducción de SCRAP en 8% en familias de artículos John Deere mediante análisis estadístico.</li>
+        <li>Diseño de accesorios para armado fuera de línea aumentando productividad 5%.</li>
+        <li>Análisis de capacidad de proveedores (Cp y Cpk) con Minitab.</li>
+      </ul>
+      <div class="tags"><span class="tag">Lean Manufacturing</span><span class="tag">Minitab</span><span class="tag">AMEF</span><span class="tag">8Ds</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-label">Proyectos destacados</span><div class="section-line"></div></div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-name">🎙️ AI Call Quality Auditor</div>
+        <div class="project-desc">Sistema n8n + GPT-4o que evalúa automáticamente llamadas de reclutamiento contra una rúbrica estructurada. Detecta patrones fonéticos, errores de transcripción y genera alertas HTML con score de confianza por ítem.</div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">📈 Sales Report AI Agent</div>
+        <div class="project-desc">Agente multi-modelo (GPT-4.1-mini) que genera reportes semanales de ventas en HTML desde Oracle. Pipeline completo desde extracción hasta distribución automática por correo a dirección comercial.</div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">🤖 JARVIS Voice Assistant</div>
+        <div class="project-desc">Asistente de voz: Porcupine (wake word) + Whisper STT + GPT-4o-mini + Edge TTS. Pipeline completo en Python con voz en español y manejo de interrupciones en tiempo real.</div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">⚙️ Multi-Agent Architecture</div>
+        <div class="project-desc">Diseño de sistemas con agentes especializados coordinados en Claude y n8n. Cada agente tiene rol definido, contexto aislado y output estructurado. Aplicado a auditoría, ventas y generación de contenido.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-label">Formación complementaria</span><div class="section-line"></div></div>
+    <div class="courses-grid">
+      <div class="course-pill"><div class="course-topic">Python para automatización</div><div class="course-src">Curso formal + producción</div></div>
+      <div class="course-pill"><div class="course-topic">n8n Workflow Automation</div><div class="course-src">Curso formal + producción</div></div>
+      <div class="course-pill"><div class="course-topic">Web Scraping & Selenium</div><div class="course-src">Automatización de navegadores</div></div>
+      <div class="course-pill"><div class="course-topic">ML Fundamentals · IBM Watson</div><div class="course-src">Maestría en IA</div></div>
+      <div class="course-pill"><div class="course-topic">Lean Manufacturing</div><div class="course-src">Certificado</div></div>
+      <div class="course-pill"><div class="course-topic">ISO 31000 Gestión de Riesgos</div><div class="course-src">Certificado</div></div>
+      <div class="course-pill"><div class="course-topic">Core Tools & 8Ds</div><div class="course-src">Certificado</div></div>
+      <div class="course-pill"><div class="course-topic">Control Estadístico · Minitab 19</div><div class="course-src">Certificado</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-label">Educación</span><div class="section-line"></div></div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-degree">Maestría en Inteligencia Artificial</div>
+        <div class="edu-school">En curso · Monterrey, NL</div>
+        <div class="edu-year">2021 — Actual</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-degree">Ingeniero Industrial y de Sistemas</div>
+        <div class="edu-school">Licenciatura completa</div>
+        <div class="edu-year">2016 — 2019</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-note">Actualizado · Mayo 2026</span>
+    <span class="footer-loc">📍 Monterrey, NL · Disponible para trabajo remoto</span>
+  </div>
+
+</div>
+</body>
+</html>
